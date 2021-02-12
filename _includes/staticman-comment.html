@@ -1,18 +1,21 @@
-<article id="comment{{ include.index }}" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
+<article id="{{ include.anchor }}" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
   <div class="comment__avatar-wrapper">
     <img class="comment__avatar" src="https://www.gravatar.com/avatar/{{ include.email }}?d=mm&s=80" alt="{{ include.name }}">
   </div>
   <div class="comment__content-wrapper">
     <h4 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
-      {% unless include.url == blank %}
+      {% unless include.url == "" %}
         <span itemprop="name"><a rel="external nofollow" itemprop="url" href="{{ include.url }}">{{ include.name }}</a></span>
       {% else %}
         <span itemprop="name">{{ include.name }}</span>
       {% endunless %}
+      {% if include.replytoanchor != nil %}
+      <span style="font-weight: normal;"> ⇢ <a href="#{{ include.replytoanchor }}" itemprop="url">{{ include.replytoname }}</a></span>
+      {% endif %}
     </h4>
     <p class="comment__date">
       {% if include.date %}
-        {% if include.index %}<a href="#comment{{ include.index }}" itemprop="url">{% endif %}
+        {% if include.index %}<a href="#{{ include.anchor }}" itemprop="url">{% endif %}
         <time datetime="{{ include.date | date_to_xmlschema }}" itemprop="datePublished">{{ include.date | date: "%B %d, %Y at %I:%M %p" }}</time>
         {% if include.index %}</a>{% endif %}
       {% endif %}
@@ -20,3 +23,24 @@
     <div itemprop="text">{{ include.message | markdownify }}</div>
   </div>
 </article>
+
+{%- assign this_uid = include.uid -%}
+{%- assign replies = site.data.comments[page.slug] | where: 'replying_to_uid', this_uid %}
+{% if replies %}
+  <ol style="list-style: none;">
+    {% for comment in replies %}
+      {% assign email = comment.email %}
+      {% assign name = comment.name %}
+      {% assign url = comment.url %}
+      {% assign date = comment.date %}
+      {% assign message = comment.message %}
+      {% assign uid = comment._id %}
+      {% assign anchor = include.anchor | append: "-reply" | append: forloop.index %}
+      {% assign replytoanchor = include.anchor %}
+      {% assign replytoname = include.name %}
+      <li>
+        {% include staticman-comment.html anchor=anchor index=forloop.index email=email name=name url=url date=date message=message uid=uid replytoanchor=replytoanchor replytoname=replytoname %}
+      </li>
+    {% endfor %}
+  </ol>
+{% endif %}

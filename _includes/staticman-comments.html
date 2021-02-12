@@ -5,15 +5,23 @@
     <div class="js-comments">
       {% if site.data.comments[page.slug] %}
         <h3 class="page__comments-title">{{ site.data.ui-text[site.locale].comments_title | default: "Comments" }}</h3>
-        {% assign comments = site.data.comments[page.slug] | sort %}
-        {% for comment in comments %}
-          {% assign email = comment[1].email %}
-          {% assign name = comment[1].name %}
-          {% assign url = comment[1].url %}
-          {% assign date = comment[1].date %}
-          {% assign message = comment[1].message %}
-          {% include staticman-comment.html index=forloop.index email=email name=name url=url date=date message=message %}
+        
+        {% assign comments = site.data.comments[page.slug] | where: "replying_to_uid", empty %}
+        {% assign comments_by_date = comments | sort: 'date' %}
+        <ol style="list-style: none; padding: 0;">
+        {% for comment in comments_by_date %}
+          {% assign email = comment.email %}
+          {% assign name = comment.name %}
+          {% assign url = comment.url %}
+          {% assign date = comment.date %}
+          {% assign message = comment.message %}
+          {% assign uid = comment._id %}
+          {% assign anchor = "comment" | append: forloop.index %}
+          <li>
+          {% include staticman-comment.html anchor=anchor index=forloop.index email=email name=name url=url date=date message=message uid=uid %}
+          </li>
         {% endfor %}
+        </ol>
       {% endif %}
     </div>
     <!-- End static comments -->
