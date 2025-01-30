@@ -22,6 +22,13 @@
     </p>
     <div itemprop="text">{{ include.message | markdownify }}</div>
   </div>
+  {% unless replytoanchor %}
+  <div class="comment__reply">
+    <a rel="nofollow" class="button" href="#comment-{{ include.index }}" onclick="return addComment.moveForm( 'comment{{ include.index }}', '{{ include.uid }}', 'respond', '{{ page.slug }}')">
+      Reply to {{ include.name }}
+    </a>
+  </div>
+  {% endunless %}
 </article>
 
 {%- assign this_uid = include.uid -%}
@@ -44,3 +51,4 @@
     {% endfor %}
   </ol>
 {% endif %}
+{% assign replytoanchor = null %}
