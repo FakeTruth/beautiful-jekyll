@@ -24,7 +24,7 @@
   </div>
   {% unless replytoanchor %}
   <div class="comment__reply">
-    <a rel="nofollow" class="button" href="#comment-{{ include.index }}" onclick="return addComment.moveForm( 'comment{{ include.index }}', '{{ include.uid }}', 'respond', '{{ page.slug }}')">
+    <a rel="nofollow" class="button" href="#comment-{{ include.index }}" onclick="return addComment.moveForm( 'comment{{ include.index }}', '{{ include.uid }}', 'respond', '{{ page.slug }}', '{{ include.name }}')">
       Reply to {{ include.name }}
     </a>
   </div>

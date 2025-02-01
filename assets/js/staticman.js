@@ -68,17 +68,20 @@ layout: null
 // Staticman comment replies
 // modified from Wordpress https://core.svn.wordpress.org/trunk/wp-includes/js/comment-reply.js
 var addComment = {
-  moveForm: function( commId, parentId, respondId, postId ) {
+  moveForm: function( commId, parentId, respondId, postId, replyToName ) {
     var div, element, style, cssHidden,
       t           = this,
       comm        = t.I( commId ),
       respond     = t.I( respondId ),
       cancel      = t.I( 'cancel-comment-reply-link' ),
+      title       = t.I( 'comments-title' ),
+      reply       = t.I( 'comments-title-reply' ),
+      replyName   = t.I( 'comments-title-reply-name' ),
       parent      = t.I( 'comment-parent' ),
       post        = t.I( 'comment-post-slug' ),
       commentForm = respond.getElementsByTagName( 'form' )[0];
 
-    if ( ! comm || ! respond || ! cancel || ! parent || ! commentForm ) {
+    if ( ! comm || ! respond || ! cancel || ! parent || ! commentForm  || ! title || ! reply || ! replyName) {
       return;
     }
 
@@ -99,6 +102,10 @@ var addComment = {
     parent.value = parentId;
     cancel.style.display = '';
 
+    replyName.textContent = replyToName;
+    title.style.display = 'none';
+    reply.style.display = '';
+
     cancel.onclick = function() {
       var t       = addComment,
         temp    = t.I( 'sm-temp-form-div' ),
@@ -107,6 +114,9 @@ var addComment = {
       if ( ! temp || ! respond ) {
         return;
       }
+
+      title.style.display = '';
+      reply.style.display = 'none';
 
       t.I( 'comment-parent' ).value = '0';
       temp.parentNode.insertBefore( respond, temp );
