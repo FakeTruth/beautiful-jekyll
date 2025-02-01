@@ -118,7 +118,7 @@ var addComment = {
       title.style.display = '';
       reply.style.display = 'none';
 
-      t.I( 'comment-parent' ).value = '0';
+      t.I( 'comment-parent' ).value = '';
       temp.parentNode.insertBefore( respond, temp );
       temp.parentNode.removeChild( temp );
       this.style.display = 'none';
