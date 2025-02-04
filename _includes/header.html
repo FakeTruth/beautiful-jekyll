@@ -47,6 +47,9 @@
             {% if page.readtime %}
               {% include readtime.html %}
             {% endif %}
+            {% if site.staticman.repository and site.staticman.branch %}
+              <span style="display: block;"><a class="post-meta" style="font-style: normal;" href="#respond"><small>Leave a comment</small></a>↓</span>
+            {% endif %}
           {% endif %}
         </div>
       </div>
