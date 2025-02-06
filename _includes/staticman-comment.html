@@ -1,6 +1,6 @@
 <article id="{{ include.anchor }}" class="js-comment comment" itemprop="comment" itemscope itemtype="https://schema.org/Comment">
   <div class="comment__avatar-wrapper">
-    <img class="comment__avatar" src="https://www.gravatar.com/avatar/{{ include.email }}?d=mm&s=80" alt="{{ include.name }}">
+    <img class="comment__avatar" src="https://www.gravatar.com/avatar/{{ include.email_md5 }}?d=mm&s=80" alt="{{ include.name }}">
   </div>
   <div class="comment__content-wrapper">
     <h4 class="comment__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
@@ -36,7 +36,7 @@
 {% if replies %}
   <ol style="list-style: none;">
     {% for comment in replies %}
-      {% assign email = comment.email %}
+      {% assign email_md5 = comment.email_md5 %}
       {% assign name = comment.name %}
       {% assign url = comment.url %}
       {% assign date = comment.date %}
@@ -46,7 +46,7 @@
       {% assign replytoanchor = include.anchor %}
       {% assign replytoname = include.name %}
       <li>
-        {% include staticman-comment.html anchor=anchor index=forloop.index email=email name=name url=url date=date message=message uid=uid replytoanchor=replytoanchor replytoname=replytoname %}
+        {% include staticman-comment.html anchor=anchor index=forloop.index email_md5=email_md5 name=name url=url date=date message=message uid=uid replytoanchor=replytoanchor replytoname=replytoname %}
       </li>
     {% endfor %}
   </ol>

@@ -10,7 +10,7 @@
         {% assign comments_by_date = comments | sort: 'date' %}
         <ol style="list-style: none; padding: 0;">
         {% for comment in comments_by_date %}
-          {% assign email = comment.email %}
+          {% assign email_md5 = comment.email_md5 %}
           {% assign name = comment.name %}
           {% assign url = comment.url %}
           {% assign date = comment.date %}
@@ -18,7 +18,7 @@
           {% assign uid = comment._id %}
           {% assign anchor = "comment" | append: forloop.index %}
           <li>
-          {% include staticman-comment.html anchor=anchor index=forloop.index email=email name=name url=url date=date message=message uid=uid %}
+          {% include staticman-comment.html anchor=anchor index=forloop.index email_md5=email_md5 name=name url=url date=date message=message uid=uid %}
           </li>
         {% endfor %}
         </ol>
